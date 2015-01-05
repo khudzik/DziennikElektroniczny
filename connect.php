@@ -1,3 +1,4 @@
+<!DOCTYPE html> 
 <?php
     $hostname = 'sql3.freesqldatabase.com'; 
     $username = 'sql363159';

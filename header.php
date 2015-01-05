@@ -4,7 +4,7 @@
     <head>
         <title>Dziennik Elektroniczny</title>
         <meta charset="UTF-8" />
-        <link rel="stylesheet" href="css/style.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/style.css" type="text/css"/>
         
     </head>
     
@@ -14,8 +14,8 @@
         <div id="wrapper">
             <div id="menu">
                 <a class="item" href="/index.php">Home</a>
-                <a class="item" href="/create_topic.php">Temat+</a>
-                <a class="item" href="/create_category.php">Kategoria+</a>
+                <a class="item" href="/create_top.php">Temat+</a>
+                <a class="item" href="/create_cat.php">Kategoria+</a>
                 
                 <div id="userbar">Hello example</div>
             </div>
