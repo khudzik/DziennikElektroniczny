@@ -1,16 +1,32 @@
 <?php
     include "connect.php";
     include "header.php";
+   
+    if($_SERVER['REQUEST_METHOD'] != 'POST'){
+        echo    '<form method="POST" action="">
+                    Nazwa:<br/><input type="text" name="cat_name"/>
+                    <br/>
+                    Opis:<br/><textarea name="cat_desc"/></textarea>
+                    <br/>
+                    <input type="submit" value="Dodaj kategorie"/>
+                    
+                </form>';
+    }
+    else{
+        $sql = "INSERT INTO categories (cat_name, cat_desc)
+                VALUES('". htmlspecialchars($_POST['cat_name'])."',
+                       '". htmlspecialchars($_POST['cat_desc'])."')";
+        
+        $result = mysqli_query($conn, $sql);
+        
+        if(!$result){
+            echo 'Wystąpił błąd podczas dodawania kategori.<br/>';
+            echo 'Spróbuj ponownie później.';
+        }
+        else{
+            echo 'Nowa kategoria dodana.';
+        }
+    }
     
-    echo    '<tr>
-                <td class="leftpart">
-                    <h3><a href="category.php?id=">Category name</a></h3> Category description goes here
-                </td>
-            
-                <td class="rightpart">               
-                    <a href="topic.php?id=">Topic subject</a> at 10-10
-                </td>
-            </tr>';
-
-    include 'footer.php';
+    include "footer.php";
 ?>

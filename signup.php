@@ -2,7 +2,7 @@
     include 'connect.php';
     include 'header.php';
     
-    echo '<h3> sign up </h3>';
+    echo '<h3>Zarejestruj</h3>';
     
     if ($_SERVER['REQUEST_METHOD'] != 'POST'){
         echo    '<form method="post" action="">
@@ -11,8 +11,8 @@
                     Nazwisko: <input type="text" name="user_last"/>
                     e-mail:   <input type="text" name="user_mail"/>
                 
-                    Hasło:    <input type="text" name="user_pass"/>
-                    Powtórz hasło: <input type="text" name="user_pass_check"/>
+                    Hasło:         <input type="password" name="user_pass"/>
+                    Powtórz hasło: <input type="password" name="user_pass_check"/>
                 
                     <input type="submit" vallue="Add category"/>
     
@@ -109,7 +109,7 @@
                 echo 'Wystąpił błąd podczas rejestracji. Spróbuj później';
             }
             else{
-                echo 'Rejestracja pomyślna. Możesz się teraz <a href=/signin.php">zalogować</a>';
+                echo 'Rejestracja pomyślna. Możesz się teraz <a href="signin.php">zalogować</a>';
             }
         }
     }
