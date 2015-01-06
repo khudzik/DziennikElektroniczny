@@ -1,6 +1,6 @@
 <?php
-    include "connect.php";
-    include "header.php";
+    include 'connect.php';
+    include 'header.php';
    
     if($_SERVER['REQUEST_METHOD'] != 'POST'){
         echo    '<form method="POST" action="">
@@ -14,19 +14,19 @@
     }
     else{
         $sql = "INSERT INTO categories (cat_name, cat_desc)
-                VALUES('". htmlspecialchars($_POST['cat_name'])."',
-                       '". htmlspecialchars($_POST['cat_desc'])."')";
+                VALUES('" . htmlspecialchars($_POST['cat_name']) . "',	
+                       '" . htmlspecialchars($_POST['cat_desc']) . "')";
         
         $result = mysqli_query($conn, $sql);
         
         if(!$result){
             echo 'Wystąpił błąd podczas dodawania kategori.<br/>';
-            echo 'Spróbuj ponownie później.';
+            echo 'Spróbuj ponownie później.sdfsd';
         }
         else{
             echo 'Nowa kategoria dodana.';
         }
     }
     
-    include "footer.php";
+    include 'footer.php';
 ?>

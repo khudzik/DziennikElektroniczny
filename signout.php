@@ -17,5 +17,5 @@
 	echo 'Nie jesteś zalogowany. Możesz to zrobić <a href="signin.php">tutaj</a>';
     }
 
-include 'footer.php';
+    include 'footer.php';
 ?>
