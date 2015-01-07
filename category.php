@@ -13,7 +13,7 @@
     }
     else{
         if(mysqli_num_rows($result) == 0){
-            echo 'Ta kategoria już nie istnieje.';
+            echo 'Ta kategoria nie istnieje.';
         }
         else{
             while ($row = mysqli_fetch_assoc($result)){
