@@ -1,6 +1,4 @@
 <?php
-    session_start();
-    
     $hostname = 'sql3.freesqldatabase.com'; 
     $username = 'sql363159';
     $password = 'rX3!cB1*';
@@ -12,6 +10,5 @@
         die('Could not connect to MySQL: '.mysqli_connect_error());
     }
 
-    mysqli_query($conn, 'SET NAMES \'utf8\'');
-
+    mysqli_query($conn, 'SET NAMES \'utf8\'');  
 ?>

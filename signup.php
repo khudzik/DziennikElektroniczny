@@ -6,15 +6,22 @@
     
     if ($_SERVER['REQUEST_METHOD'] != 'POST'){
         echo    '<form method="post" action="">
-                    Login:    <input type="text" name="user_login"/>
-                    Imię:     <input type="text" name="user_name"/>
-                    Nazwisko: <input type="text" name="user_last"/>
-                    e-mail:   <input type="text" name="user_mail"/>
+                    Login:    <input type="text" name="user_login"/><br/>
+                    Imię:     <input type="text" name="user_name"/><br/>
+                    Nazwisko: <input type="text" name="user_last"/><br/>
+                    e-mail:   <input type="text" name="user_mail"/><br/>
+                    <br/>
+                    Hasło:         <input type="password" name="user_pass"/><br/>
+                    Powtórz hasło: <input type="password" name="user_pass_check"/><br/>
+                    <br/>
+                    Zarejestruj jako:
+                    <select name="user_level">
+                        <option value="2">Nauczyciel</option>
+                        <option value="1">Rodzic</option>
+                        <option value="0">Uczeń</option>
+                    </select>
                 
-                    Hasło:         <input type="password" name="user_pass"/>
-                    Powtórz hasło: <input type="password" name="user_pass_check"/>
-                
-                    <input type="submit" vallue="Add category"/>
+                    <input type="submit" value="Zarejestruj"/>
     
                 </form>';
     }
@@ -100,10 +107,11 @@
                            '" . htmlspecialchars($_POST['user_last']) . "',
                            '" . htmlspecialchars($_POST['user_mail']) . "',
                            '" . sha1($_POST['user_pass']) . "',
-                           0,
+                           -1,
                            NOW())";
             
             $result = mysqli_query($conn, $sql);
+            mysqli_query($conn, "COMMIT");
             
             if(!$result){
                 echo 'Wystąpił błąd podczas rejestracji. Spróbuj później';
@@ -111,6 +119,30 @@
             else{
                 echo 'Rejestracja pomyślna. Możesz się teraz <a href="signin.php">zalogować</a>';
             }
+            
+            //wysyłanie zgłoszenia poziomu
+            $id_sql = "SELECT user_id FROM users
+                        WHERE user_login = '" . $_POST['user_login'] . "'";
+
+            $id_que = mysqli_query($conn, $id_sql);
+            $id_row = mysqli_fetch_array($id_que);
+
+
+            $a_sql = "INSERT INTO activate (act_by, act_value, act_date, act_flag)
+                      VALUES ('" . $id_row['user_id'] . "',
+                              '" . $_POST['user_level'] . "',
+                              NOW(),
+                              3)";
+
+            $a_que = mysqli_query($conn, $a_sql);
+                       
+            
+            //poprawa wielkosci liter
+            $sql2 = "UPDATE users
+                        SET user_name = CONCAT(UCASE(LEFT(user_name,1)), LCASE(SUBSTRING(user_name, 2))),
+                            user_last = CONCAT(UCASE(LEFT(user_last,1)), LCASE(SUBSTRING(user_last, 2)));";
+            
+            $result = mysqli_query($conn, $sql2);
         }
     }
     

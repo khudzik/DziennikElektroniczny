@@ -20,13 +20,16 @@
                  
                 <div id="userbar">
                     <?php
-                        if($_SESSION['signed_in']){
-                            echo $_SESSION['user_name'].' '.$_SESSION['user_last'].' '.'<a class="item" href="signout.php">Wyloguj</a>';
+                        session_start();
+                        
+                        if(isset($_SESSION['signed_in'])){
+                            echo '<a class="item" href="panel.php">'.$_SESSION['user_name'].' '.$_SESSION['user_last'].'</a>  ';
+                            echo '<a class="item" href="signout.php">Wyloguj</a>';
                         }
                         else{
                             echo '<a class="item" href="signin.php">Zaloguj</a> <a class="item" href="signup.php">Zarejestruj</a>';
                         }
-		?>
+                    ?>
 		</div>
             </div>
             

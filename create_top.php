@@ -2,15 +2,15 @@
     include 'connect.php';
     include 'header.php';
     
-    echo '<h2>Napisz temat</h2>';
+    echo '<h2>Dodaj przedmiot do klasy</h2>';
     
     if ($_SESSION['signed_in'] == false){
-        echo 'Musisz byc <a href="signin">zalogowany</a> aby napisać teamt</a>';
+        echo 'Musisz byc <a href="signin.php">zalogowany</a> aby napisać teamt.';
     }
     else{
         if($_SERVER['REQUEST_METHOD'] != 'POST'){
             $sql = "SELECT * FROM categories";
-            $result = mysqli_query($conn, $sql);
+            $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));;
           
             if(!$result){
                 echo "Błąd podczas pobierania danych z bazy.<br/>";
@@ -22,7 +22,7 @@
                         echo 'Nie stworzyłeś jeszcze żadnych kategorii';
                     }
                     else{
-                        echo 'Zanim napiszesz temat, musisz poczekać, aż nauczyciel stworzy odpowiedni post';
+                        echo 'Zanim napiszesz temat, musisz poczekać, aż nauczyciel stworzy kategorię';
                     }
                 }
                 else{
@@ -31,8 +31,8 @@
                                 <br/>
                                 Kategoria:<br/>'; 
                         echo    '<select name="top_cat">';
-                                    while ($row = mysqli_fetch_assoc($result)){
-                                        echo '<option value="'.$row['cat_id'].'">'.$row['cat_name'].'</option>';
+                                    while ($row = mysqli_fetch_array($result)){
+                                        echo '<option value="' . $row['cat_id'] . '">' . $row['cat_name'] . '</option>';
                                     }
                         echo    '</select><br/>';
                         
@@ -54,7 +54,7 @@
                 $sql = "INSERT INTO topics (top_subject, top_cat, top_by, top_date)
                         VALUES('" . htmlspecialchars($_POST['top_subject']) . "',
                                '" . htmlspecialchars($_POST['top_cat']) . "',
-                               '" . $_SESSION['user_id']."',
+                               '" . $_SESSION['user_id'] . "',
                                NOW())";
                 
                 $result = mysqli_query($conn, $sql);

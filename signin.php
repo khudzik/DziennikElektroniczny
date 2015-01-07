@@ -41,34 +41,39 @@
                         WHERE user_login = '" . htmlspecialchars($_POST['user_login']) . "'
                           AND user_pass  = '" . sha1($_POST['user_pass']) . "'";
                         
-                $result = mysqli_query($conn, $sql);
+                $result = mysqli_query($conn, $sql) or trigger_error("Istnieje konto przypisane do tego id");
                 
                 
-                if(!$result){
-                    echo 'Błąd logowania, prosimy spróbować później';
-                }
-                else{
-                    if (mysqli_num_rows($result) == 0){
-                        echo 'Zły login lub hasło';
-                    }
-                    else{
-                        $_SESSION['signed_in'] = true;
+                if(mysqli_num_rows($result) == 1){
+                    $row = mysqli_fetch_array($result, MYSQLI_NUM);
+                    $_SESSION['signed_in'] = true;
                     
-                        while ($row = mysqli_fetch_array($result)) {
-                            $_SESSION['user_id']    = $row['user_id'];
-                            $_SESSION['user_login'] = $row['user_login'];
-                            $_SESSION['user_level'] = $row['user_level'];
-                            $_SESSION['user_name']  = $row['user_name'];
-                            $_SESSION['user_last']  = $row['user_last'];
-                        }
-                        
-                        echo 'Witaj '. $_SESSION['user_name'].' '.$_SESSION['user_last'].'<br>';
-                        echo 'Przejdź na <a href="/">stronę główną</a>';
-                    }
+                    $_SESSION['user_id']    = $row[0];
+                    $_SESSION['user_login'] = $row[1];
+                    $_SESSION['user_name']  = $row[2];
+                    $_SESSION['user_last']  = $row[3];
+                    $_SESSION['user_mail']  = $row[5];
+                    $_SESSION['user_level'] = $row[7];
+                    
+                    session_regenerate_id();
+                    session_regenerate_id();
+                    mysqli_close($conn);
+                    
+                    echo 'Zalogowałeś się poprawnie<br/>';
+                    echo 'Jeżeli nie nastąpi automatyczne przekierowanie na stronę główną, możesz to zrobić <a href="/">tutaj</a>';
+                    header ("refresh:3; url=/" );
+                
+                    exit();
+                }
+                else{                 
+                    echo 'Podałeś błędne dane logowania. <a href="signin.php">Spróbuj ponownie.</a>';
+                    session_destroy();
                 }
             }
         }
     }
     
     include 'footer.php';
+    
+    
 ?>

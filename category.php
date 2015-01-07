@@ -5,7 +5,7 @@
     $sql = "SELECT * FROM categories
             WHERE cat_id = " . htmlspecialchars($_GET['id']);
     
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
     
     if(!$result){
         echo 'Nie można wyświetlić kategorii.<br/>';
@@ -17,7 +17,7 @@
         }
         else{
             while ($row = mysqli_fetch_assoc($result)){
-                echo '<h2>Tematy w &prime;'.$row['cat_name'].'&prime; kategori</h2><br/>';
+                echo '<h2>Tematy w ' . $row['cat_name'] . 'kategori</h2><br/>';
             }
             
             $sql = "SELECT top_id, top_subject, top_date, top_cat FROM topics
@@ -26,7 +26,7 @@
             $result = mysqli_query($conn, $sql);
             
             if(!$result){
-                echo 'Nie można wyświetlić tematu.<br/>';
+                echo 'Nie można wyświetlić tematów.<br/>';
                 echo 'Proszę spróbować później.';
             }
             else{
@@ -35,12 +35,12 @@
                 }
                 else{
                     echo    '<table>';
-                    echo    '<tr><th>Temat</th><th>Data</th></tr>';	
+                    echo    '<tr><th>Temat</th><th>Utworzono:</th></tr>';	
 					
-                            while($row = mysqli_fetch_assoc($result)){				
+                            while($row = mysqli_fetch_array($result)){				
                                 echo '<tr>';
                                     echo '<td class="leftpart">';
-                                        echo '<h3><a href="topic.php?id=' . $row['top_id'] . '">' . $row['top_subject'] . '</a><br /><h3>';
+                                        echo '<h3><a href="topic.php?id=' . $row['top_id'] . '">' . $row['top_subject'] . '</a></h3>';
                                     echo '</td>';
                                     echo '<td class="rightpart">';
                                         echo date('d-m-Y', strtotime($row['top_date']));
