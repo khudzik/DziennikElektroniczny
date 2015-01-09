@@ -20,7 +20,7 @@
                  
                 <div id="userbar">
                     <?php
-                        session_start();
+                        session_regenerate_id();
                         
                         if(isset($_SESSION['signed_in'])){
                             echo '<a class="item" href="panel.php">'.$_SESSION['user_name'].' '.$_SESSION['user_last'].'</a>  ';

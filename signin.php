@@ -26,7 +26,6 @@
             if(!isset($_POST['user_pass'])){
                 $errors[] = 'Pole hasło nie może być puste';
             }
-            
             if(!empty($errors)){
                 echo 'Błąd logowania. Proszę poprawić dane!';
             

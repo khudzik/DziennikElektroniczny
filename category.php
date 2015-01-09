@@ -17,7 +17,7 @@
         }
         else{
             while ($row = mysqli_fetch_assoc($result)){
-                echo '<h2>Tematy w ' . $row['cat_name'] . 'kategori</h2><br/>';
+                echo '<h2>' . $row['cat_name'] . '</h2><br/>';
             }
             
             $sql = "SELECT top_id, top_subject, top_date, top_cat FROM topics

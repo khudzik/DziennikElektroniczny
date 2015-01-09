@@ -46,14 +46,12 @@
                                 else{
                                     while($topicrow = mysqli_fetch_assoc($topicsresult))
                                         echo '<a href="topic.php?id=' . $topicrow['top_id'] . '">' . $topicrow['top_subject'] . '</a> at ' . date('d-m-Y', strtotime($topicrow['top_date']));
-                                
-                                    echo    '</td>';
-                                    echo '</tr>';
                                 }
                             }
                 echo    '</td>';
                 echo '</tr>';
             }
+            echo '</table>';
         }
     }
 

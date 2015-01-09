@@ -19,7 +19,7 @@
             else{
                 if(mysqli_num_rows($result) == 0){
                     if($_SESSION['user_level'] == 1){
-                        echo 'Nie stworzyłeś jeszcze żadnych kategorii';
+                        echo 'Nie ma jesze żadnych kategorii.';
                     }
                     else{
                         echo 'Zanim napiszesz temat, musisz poczekać, aż nauczyciel stworzy kategorię';
