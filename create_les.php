@@ -18,26 +18,18 @@
             }
             else{
                 if(mysqli_num_rows($result) == 0){
-                    if($_SESSION['user_level'] == 1){
-                        echo 'Nie ma jesze żadnych kategorii.';
-                    }
-                    else{
-                        echo 'Zanim napiszesz temat, musisz poczekać, aż nauczyciel stworzy kategorię';
-                    }
+                    echo 'Nie ma jeszcze klas do których możesz dodać przedmiot';
                 }
                 else{
                     echo    '<form method="post" action="">
-                                Temat:<br/><input type="text" name="top_subject"/>
-                                <br/>
-                                Kategoria:<br/>'; 
+                                Nazwa przedmiotu:<input type="text" name="top_subject"/><br/>
+                                Klasa:'; 
                         echo    '<select name="top_cat">';
                                     while ($row = mysqli_fetch_array($result)){
                                         echo '<option value="' . $row['cat_id'] . '">' . $row['cat_name'] . '</option>';
                                     }
-                        echo    '</select><br/>';
-                        echo    'Przedmiot: <input type="checkbox" name="islesson"><br/>';
-                        echo    'Treść<br/>: <textarea name="pos_content"/></textarea><br/>
-                                        <input type="submit" value="Napisz temat"/>';
+                        echo    '</select><br/>
+                                 <input type="submit" value="Wygeneruj przedmiot"/>';
                     echo    '</form>';
                 }
             }
@@ -47,7 +39,7 @@
             $result = mysqli_query($conn, $query);
             
             if(!$result){
-                echo 'Wystąpił błąd podczas dodawania tematu.<br\>';
+                echo 'Wystąpił błąd podczas dodawania przedmiotu.<br\>';
                 echo 'Proszę spróbować później.';
             }
             else{
@@ -58,38 +50,41 @@
                                NOW())";
                 
                 $result = mysqli_query($conn, $sql);
-                $sub_id = mysqli_insert_id($conn);
-                                
+                $id_top = mysqli_insert_id($conn);
+                
                 if(!$result){
                     echo 'Wystąpił błąd podczas dodawania tematu.<br\>';
                     echo 'Proszę spróbować później.';
-                    
+
                     $sql = "ROLLBACK;";
                     $result = mysqli_query($conn, $sql);
                 }
                 else{
-                    $topic_id = mysqli_insert_id($conn);
+                    $sql1 = "COMMIT;";
+                    $que1 = mysqli_query($conn, $sql1);
                     
-                    $sql = "INSERT INTO posts (pos_content, pos_date, pos_topic, pos_by)
-                            VALUES('" . htmlspecialchars($_POST['pos_content']) . "',
-                                   NOW(),
-                                   '" . $topic_id . "',
-                                   '" . $_SESSION['user_id'] . "')";
-                    $result = mysqli_query($conn, $sql);
-                
-                    if(!$result){
-                        echo "Wystąpił błąd podczas dodawania posta.<br/>";
-                        echo "Proszę spróbować później.";
-                        
-                        $sql = "ROLLBACK;";
-                        $result = mysqli_query($conn, $sql);
-                    }
-                    else{
-                        $sql = "COMMIT;";
-                        $result = mysqli_query($conn, $sql);
+                    $sql2 = "INSERT INTO lessons(top_id) VALUES ($id_top)";
+                    $que2 = mysqli_query($conn, $sql2);
+                    $id_les = mysqli_insert_id($conn);
+                    
+                    $sql3 = "SELECT student_id, user_last, user_name FROM users, students, classes, categories
+                             WHERE users.user_id = students.user_id
+                               AND students.class_id = classes.class_id
+                               AND classes.class_id = categories.cat_id
+                               AND categories.cat_id = ".$_POST['top_cat']."
+                             ORDER BY user_last";
 
-                        echo 'Poprawnie utworzyłeś <a href="topic.php?id='. $topic_id . '">nowy temat</a>.';
+                    $que3 = mysqli_query($conn, $sql3);
+                    
+                    while ($row = mysqli_fetch_array($que3)){
+                        $sql = "INSERT INTO grades(les_id, stu_id) VALUES ($id_les,". $row['student_id'].")";
+                        $que = mysqli_query($conn, $sql);                        
+                        echo $id_les.' '.$row['student_id'].' '.$row['user_last'].' '.$row['user_name'].'<br/>';
                     }
+                    
+                    
+                    
+                    echo 'Poprawnie wygenerowałeś nowy przedmiot: <a href="topic.php?id=' .$id_top. '">'.$_POST['top_subject'].'</a>.';
                 }
             }
         }

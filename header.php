@@ -14,8 +14,8 @@
         <div id="wrapper">
             <div id="menu">
                 <a class="item" href="/">Home</a>
-                <a class="item" href="create_top.php">Temat+</a>
-                <a class="item" href="create_cat.php">Kategoria+</a>
+                <a class="item" href="create_les.php">Przedmiot+</a>
+                <a class="item" href="create_cat.php">Klasa+</a>
                 
                  
                 <div id="userbar">

@@ -1,5 +1,7 @@
 DROP TABLE activate;
+DROP TABLE grades;
 DROP TABLE posts;
+DROP TABLE lessons;
 DROP TABLE topics;
 DROP TABLE parents;
 DROP TABLE students;
@@ -8,7 +10,6 @@ DROP TABLE classes;
 DROP TABLE users;
 DROP TABLE categories;
 
---UZYTKOWNICY
 CREATE TABLE users (
     user_id         INT(4)          NOT NULL AUTO_INCREMENT,
     user_login      VARCHAR(40)     NOT NULL,
@@ -66,6 +67,14 @@ CREATE TABLE categories (
 ) ENGINE=INNODB;
 
 
+CREATE TABLE classes (
+    class_id        INT(4)          NOT NULL AUTO_INCREMENT,
+    cat_id          INT(4)          NOT NULL,
+
+    PRIMARY KEY (class_id)
+) ENGINE=INNODB;
+
+
 CREATE TABLE topics (
     top_id          INT(4)          NOT NULL AUTO_INCREMENT,
     top_subject     VARCHAR(255)    NOT NULL,
@@ -75,6 +84,24 @@ CREATE TABLE topics (
 
     PRIMARY KEY (top_id)
 ) ENGINE=INNODB;
+
+CREATE TABLE lessons(
+    les_id         INT(4)          NOT NULL AUTO_INCREMENT,
+    top_id         INT(4)          NOT NULL,
+
+    PRIMARY KEY (les_id)
+)ENGINE=INNODB;
+
+CREATE TABLE grades(
+    gra_id        INT(4)          NOT NULL AUTO_INCREMENT,
+    les_id        INT(4)          NOT NULL,
+    stu_id        INT(4)          NOT NULL,
+    gd_1d         VARCHAR(40),
+    gd_1          FLOAT,
+
+    PRIMARY KEY (gra_id)
+) ENGINE=INNODB;
+
 
 
 CREATE TABLE posts (
@@ -99,12 +126,6 @@ CREATE TABLE activate(
 ) ENGINE=INNODB;
 
 
-CREATE TABLE classes (
-    class_id        INT(4)          NOT NULL AUTO_INCREMENT,
-    cat_id          INT(4)          NOT NULL,
-
-    PRIMARY KEY (class_id)
-) ENGINE=INNODB;
 
 
 
@@ -113,15 +134,19 @@ CREATE TABLE classes (
 ALTER TABLE topics   ADD FOREIGN KEY (top_cat)   REFERENCES categories(cat_id)      ON DELETE CASCADE  ON UPDATE CASCADE;
 ALTER TABLE topics   ADD FOREIGN KEY (top_by)    REFERENCES users(user_id)          ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE posts    ADD FOREIGN KEY (pos_topic)   REFERENCES topics(top_id)          ON DELETE CASCADE  ON UPDATE CASCADE;
-ALTER TABLE posts    ADD FOREIGN KEY (pos_by)      REFERENCES users(user_id)          ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE posts    ADD FOREIGN KEY (pos_topic)   REFERENCES topics(top_id)        ON DELETE CASCADE  ON UPDATE CASCADE;
+ALTER TABLE posts    ADD FOREIGN KEY (pos_by)      REFERENCES users(user_id)        ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE activate ADD FOREIGN KEY (act_by)      REFERENCES users(user_id)          ON DELETE CASCADE  ON UPDATE CASCADE; --!!!!!!
+ALTER TABLE activate ADD FOREIGN KEY (act_by)      REFERENCES users(user_id)        ON DELETE CASCADE  ON UPDATE CASCADE;
 
-ALTER TABLE students ADD FOREIGN KEY (user_id)     REFERENCES users(user_id)          ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE students ADD FOREIGN KEY (class_id)    REFERENCES classes(class_id)       ON DELETE CASCADE  ON UPDATE CASCADE;
+ALTER TABLE students ADD FOREIGN KEY (user_id)     REFERENCES users(user_id)        ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE students ADD FOREIGN KEY (class_id)    REFERENCES classes(class_id)     ON DELETE CASCADE  ON UPDATE CASCADE;
 
-ALTER TABLE parents  ADD FOREIGN KEY (user_id)     REFERENCES users(user_id)         ON DELETE CASCADE  ON UPDATE CASCADE;
-ALTER TABLE parents  ADD FOREIGN KEY (children_id) REFERENCES children(child_id)     ON DELETE CASCADE  ON UPDATE CASCADE;
+ALTER TABLE parents  ADD FOREIGN KEY (user_id)     REFERENCES users(user_id)        ON DELETE CASCADE  ON UPDATE CASCADE;
+ALTER TABLE parents  ADD FOREIGN KEY (children_id) REFERENCES children(child_id)    ON DELETE CASCADE  ON UPDATE CASCADE;
 
-ALTER TABLE classes  ADD FOREIGN KEY (cat_id)      REFERENCES categories(cat_id)      ON DELETE CASCADE  ON UPDATE CASCADE;
+ALTER TABLE classes  ADD FOREIGN KEY (cat_id)      REFERENCES categories(cat_id)    ON DELETE CASCADE  ON UPDATE CASCADE;
+ALTER TABLE lessons  ADD FOREIGN KEY (top_id)      REFERENCES topics(top_id)        ON DELETE CASCADE  ON UPDATE CASCADE;
+
+ALTER TABLE grades   ADD FOREIGN KEY (les_id)      REFERENCES lessons(les_id)       ON DELETE CASCADE  ON UPDATE CASCADE;
+ALTER TABLE grades   ADD FOREIGN KEY (stu_id)      REFERENCES students(student_id)  ON DELETE CASCADE  ON UPDATE CASCADE;  

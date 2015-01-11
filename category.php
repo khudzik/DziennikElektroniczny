@@ -34,7 +34,7 @@
                     echo 'W tej kategorii nie ma jeszcze tematów';
                 }
                 else{
-                    echo    '<table>';
+                    echo    '<table border 1>';
                     echo    '<tr><th>Temat</th><th>Utworzono:</th></tr>';	
 					
                             while($row = mysqli_fetch_array($result)){				

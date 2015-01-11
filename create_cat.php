@@ -31,7 +31,7 @@
             $result = mysqli_query($conn, $sql);
             $id = mysqli_insert_id($conn);
             
-            if($_POST['is_class'] == true){;
+            if($_POST['is_class'] == true){
                 $sql = "INSERT INTO classes (cat_id) VALUES($id)";
                 $que = mysqli_query($conn, $sql);
             }
